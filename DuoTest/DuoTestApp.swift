@@ -11,7 +11,9 @@ import SwiftUI
 struct DuoTestApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(
+                interactor: RootInteractor(state: .init())
+            )
         }
     }
 }
