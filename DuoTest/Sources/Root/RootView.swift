@@ -34,6 +34,7 @@ struct RootView: View {
                 }
                 Section("2. 시스템 컨테이너") {
                     Button("NavigationSplitView") { self.interactor.send(.tapSplitButton) }
+                    Button("NavigationSplitTripleView") { self.interactor.send(.tapTripleSplitButton) }
                     Button("TabView") { self.interactor.send(.tapTabButton) }
                     Button("ArrangementView") { self.interactor.send(.tapArrangementButton) }
                 }
@@ -59,6 +60,8 @@ struct RootView: View {
             switch cover {
             case .split:
                 SplitDemo()
+            case .tripleSplit:
+                TripleSplitDemo()
             case .tab:
                 TabDemo()
             case .arrangement:
