@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct BoundsCompareView: View {
-    @State private var full = ContainerInfo()
+    @State private var fullContainer = ContainerInfo()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             InfoRows(rows: [
                 .init("UIScreen.main.bounds", sizeFormat(Env.screen.size)),
-                .init("컨테이너 (geo.size)", sizeFormat(full.size)),
-                .init("safeArea", insetFormat(full.safe)),
+                .init("컨테이너 (geo.size)", sizeFormat(fullContainer.size)),
+                .init("safeArea", insetFormat(fullContainer.safe)),
                 .init("orientation", Env.orientation),
                 .init("idiom", Env.idiom),
             ])
@@ -47,7 +47,7 @@ struct BoundsCompareView: View {
                         .frame(height: 16)
                         .overlay(alignment: .leading) {
                             Rectangle().fill(.green.opacity(0.6))
-                                .frame(width: full.size.width)
+                                .frame(width: fullContainer.size.width)
                         }
                     
                 }
@@ -55,7 +55,7 @@ struct BoundsCompareView: View {
             .frame(alignment: .top)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .trackContainer($full, label: "full")
+        .trackContainer($fullContainer, label: "full")
         .reservedRegionOverlay()
         .navigationTitle("bounds 비교")
     }

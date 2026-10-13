@@ -16,7 +16,6 @@ final class RootInteractor: ObservableObject {
             case sizeClass
             case systemToolbar
             case customBar
-            case toolbarItemKinds
         }
 
         enum Cover: String, Identifiable {
@@ -37,7 +36,6 @@ final class RootInteractor: ObservableObject {
         case tapSizeClassButton
         case tapSystemToolbarButton
         case tapCustomBarButton
-        case tapToolbarItemKindsButton
 
         // cover
         case tapSplitButton
@@ -87,9 +85,6 @@ extension RootInteractor {
             return .setPaths([.systemToolbar])
         case .tapCustomBarButton:
             return .setPaths([.customBar])
-        case .tapToolbarItemKindsButton:
-            return .setPaths([.toolbarItemKinds])
-
         case .tapSplitButton:
             return .setCover(.split)
         case .tapTabButton:

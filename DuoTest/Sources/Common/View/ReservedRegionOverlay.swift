@@ -13,16 +13,6 @@
 
 import SwiftUI
 
-extension View {
-    func reservedRegionOverlay() -> some View {
-        overlay {
-            if #available(iOS 27.1, *) {
-                ReservedRegionOverlay()
-            }
-        }
-    }
-}
-
 nonisolated struct RegionFrames: Equatable, Sendable {
     var occlusion: [CGRect] = []
     var division: [CGRect] = []

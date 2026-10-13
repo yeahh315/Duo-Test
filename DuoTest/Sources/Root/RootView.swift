@@ -31,7 +31,6 @@ struct RootView: View {
                 Section("Bar 위치") {
                     Button("⭕️ 시스템 toolbar") { self.interactor.send(.tapSystemToolbarButton) }
                     Button("❌ 커스텀 바") { self.interactor.send(.tapCustomBarButton) }
-                    Button("아이템 종류별 (타이틀/아이콘/커스텀)") { self.interactor.send(.tapToolbarItemKindsButton) }
                 }
                 Section("2. 시스템 컨테이너") {
                     Button("NavigationSplitView") { self.interactor.send(.tapSplitButton) }
@@ -50,8 +49,6 @@ struct RootView: View {
                     SystemToolbarView()
                 case .customBar:
                     CustomBarView()
-                case .toolbarItemKinds:
-                    ToolbarItemKindsView()
                 }
             }
         }
