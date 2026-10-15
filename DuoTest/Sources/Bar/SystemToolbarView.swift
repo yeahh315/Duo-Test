@@ -80,10 +80,11 @@ struct SystemToolbarView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 4) {
                         Circle().fill(.red).frame(width: 8, height: 8)
-                        Text("커스텀")
+                        Text("커스텀 뷰")
                     }
                 }
                 if #available(anyAppleOS 27.1, *) {
+                    // 커스텀 뷰이지만 .axisBehavior(.verticalPreferred)를 붙인 경우
                     ToolbarItem(placement: .topBarTrailing) {
                         HStack(spacing: 4) {
                             Circle().fill(.red).frame(width: 8, height: 8)
@@ -94,8 +95,7 @@ struct SystemToolbarView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         HStack(spacing: 4) {
-                            Circle().fill(.red).frame(width: 8, height: 8)
-                            Text("텍스트가 길어지면..?")
+                            Text("긴 텍스트")
                         }
                     }
                     .axisBehavior(.verticalPreferred)
