@@ -2,6 +2,9 @@
 import SwiftUI
 
 extension View {
+    
+    /// 뷰가 실제로 받은 영역을 재서,
+    /// 바뀔 때마다 상태에 저장해줌
     func trackContainer(_ info: Binding<ContainerInfo>, label: String) -> some View {
         onGeometryChange(for: ContainerInfo.self) { proxy in
             ContainerInfo(size: proxy.size, safe: proxy.safeAreaInsets)

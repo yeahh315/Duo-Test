@@ -73,7 +73,7 @@ struct BoundsCompareView: View {
             .frame(alignment: .top)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .trackContainer($fullContainer, label: "full")
+//        .trackContainer($fullContainer, label: "full")
         .safeAreaRegionBackground()
         .reservedRegionOverlay()
         .hingeInfo { status, degree in
