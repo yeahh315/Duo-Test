@@ -18,4 +18,27 @@ extension View {
             }
         }
     }
+    
+    func safeAreaRegionBackground() -> some View {
+        background {
+            if #available(iOS 27.1, *) { SafeAreaBackground() }
+        }
+    }
+    
+    @ViewBuilder
+    func hingeInfo(
+        _ action: @escaping (_ status: String, _ degrees: Double?) -> Void
+    ) -> some View {
+        if #available(iOS 27.1, *) {
+            onHingeChange { _, context in
+                guard let hinge = context.hinge else {
+                    action("힌지 없음", nil)
+                    return
+                }
+                action(String(describing: hinge.status), hinge.angle.degrees)
+            }
+        } else {
+            self
+        }
+    }
 }

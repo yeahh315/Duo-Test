@@ -22,7 +22,10 @@ import SwiftUI
  */
 
 struct BoundsCompareView: View {
+    
     @State private var fullContainer = ContainerInfo()
+    
+    @State private var hingeInfo: Hinge?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -32,8 +35,11 @@ struct BoundsCompareView: View {
                 .init("safeArea", insetFormat(fullContainer.safe)),
                 .init("orientation", Env.orientation),
                 .init("idiom", Env.idiom),
+                .init("hinge.status", hingeInfo?.status ?? "힌지 없음"),
+                .init("hinge.degree", "\(String(describing: hingeInfo?.degree))")
             ])
             .padding(.horizontal)
+            .padding(.top)
 
             Text("Width 값")
                 .font(.headline)
@@ -51,6 +57,7 @@ struct BoundsCompareView: View {
                             Rectangle().fill(.red.opacity(0.6))
                                 .frame(width: Env.screen.width)
                         }
+                        .ignoresSafeArea()
 
                     Text("⭕️ 컨테이너 width")
                         .font(.caption2)
@@ -67,7 +74,11 @@ struct BoundsCompareView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .trackContainer($fullContainer, label: "full")
+        .safeAreaRegionBackground()
         .reservedRegionOverlay()
+        .hingeInfo { status, degree in
+            hingeInfo = .init(status: status, degree: degree ?? 0)
+        }
         .navigationTitle("bounds 비교")
     }
 }

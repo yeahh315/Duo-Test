@@ -16,37 +16,28 @@ import SwiftUI
 nonisolated struct RegionFrames: Equatable, Sendable {
     var occlusion: [CGRect] = []
     var division: [CGRect] = []
+    var inactiveOcclusion: [CGRect] = []
+    var inactiveDivision: [CGRect] = []
 }
 
 @available(iOS 27.1, *)
 struct ReservedRegionOverlay: View {
-    
-    @State private var regions = RegionFrames()
-
     var body: some View {
-        Color.clear
-            .onGeometryChange(for: RegionFrames.self) { proxy in
-                RegionFrames(
-                    occlusion: proxy.reservedRegions(kind: .occlusion).map(\.frame),
-                    division: proxy.reservedRegions(kind: .division).map(\.frame)
-                )
-            } action: { new in
-                regions = new
-                print("occlusion:", new.occlusion, "/ division:", new.division)
-            }
-            .overlay(alignment: .topLeading) {
-                ZStack(alignment: .topLeading) {
-                    ForEach(Array(regions.division.enumerated()), id: \.offset) { _, frame in
-                        RegionBox(frame: frame, color: .orange, label: "division")
-                    }
-                    ForEach(Array(regions.occlusion.enumerated()), id: \.offset) { _, frame in
-                        RegionBox(frame: frame, color: .purple, label: "occlusion")
-                    }
+        GeometryReader { proxy in
+            let divisions = proxy.reservedRegions(kind: .division, options: .includeInactive)
+            let occlusions = proxy.reservedRegions(kind: .occlusion, options: .includeInactive)
+
+            ZStack(alignment: .topLeading) {
+                ForEach(Array(divisions.enumerated()), id: \.offset) { _, region in
+                    RegionBox(frame: region.frame, color: .blue, label: "division", isActive: region.isActive)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                ForEach(Array(occlusions.enumerated()), id: \.offset) { _, region in
+                    RegionBox(frame: region.frame, color: .red, label: "occlusion", isActive: region.isActive)
+                }
             }
-            .ignoresSafeArea()
-            .allowsHitTesting(false)
+        }
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
     }
 }
 
@@ -54,21 +45,32 @@ struct RegionBox: View {
     let frame: CGRect
     let color: Color
     let label: String
+    var isActive = true
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Rectangle().fill(color.opacity(0.35))
-            Rectangle().stroke(color, lineWidth: 2)
+        // inactive division은 폭이 0이라 최소 2pt로 그려서 위치만 보이게
+        let width = max(frame.width, 2)
+        let height = max(frame.height, 2)
 
-            Text("\(label)\n\(Int(frame.minX)),\(Int(frame.minY)) \(Int(frame.width))×\(Int(frame.height))")
+        ZStack(alignment: .topLeading) {
+            if isActive {
+                Rectangle().fill(color.opacity(0.35))
+                Rectangle().stroke(color, lineWidth: 2)
+            } else {
+                Rectangle().fill(color.opacity(0.08))
+                Rectangle().stroke(color.opacity(0.5), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
+            }
+        }
+        .frame(width: width, height: height, alignment: .topLeading)
+        .overlay(alignment: .topLeading) {                                  // 라벨은 크기 계산에서 제외
+            Text("\(label)\(isActive ? "" : " (inactive)")\n\(Int(frame.minX)),\(Int(frame.minY)) \(Int(frame.width))×\(Int(frame.height))")
                 .font(.system(size: 10, weight: .semibold).monospacedDigit())
                 .foregroundStyle(.white)
                 .padding(4)
-                .background(color, in: .rect(cornerRadius: 4))
+                .background(color.opacity(isActive ? 1 : 0.5), in: .rect(cornerRadius: 4))
                 .fixedSize()
                 .offset(x: 4, y: 4)
         }
-        .frame(width: frame.width, height: frame.height, alignment: .topLeading)
         .offset(x: frame.minX, y: frame.minY)
     }
 }
