@@ -30,6 +30,7 @@ struct RootView: View {
                 }
                 Section("Bar 위치") {
                     Button("⭕️ 시스템 toolbar") { self.interactor.send(.tapSystemToolbarButton) }
+                    Button("⭕️ 시스템 toolbar + tabbar") { self.interactor.send(.tapSystemToolbarTabViewButton) }
                     Button("❌ 커스텀 바") { self.interactor.send(.tapCustomBarButton) }
                 }
                 Section("2. 시스템 컨테이너") {
@@ -64,6 +65,12 @@ struct RootView: View {
                 TripleSplitDemo()
             case .tab:
                 TabDemo()
+            case .toolBarTabBar:
+                if #available(iOS 27.1, *) {
+                        SystemToolbarTabDemo()
+                    } else {
+                        Text("iOS 27.1+ 필요")
+                    }
             case .arrangement:
                 if #available(iOS 27.1, *) {
                     ArrangementDemo()

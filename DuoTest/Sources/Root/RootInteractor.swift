@@ -19,7 +19,7 @@ final class RootInteractor: ObservableObject {
         }
 
         enum Cover: String, Identifiable {
-            case split, tripleSplit, tab, arrangement
+            case split, tripleSplit, tab, toolBarTabBar, arrangement
             var id: String { rawValue }
         }
 
@@ -35,6 +35,7 @@ final class RootInteractor: ObservableObject {
         case tapBoundsButton
         case tapSizeClassButton
         case tapSystemToolbarButton
+        case tapSystemToolbarTabViewButton
         case tapCustomBarButton
 
         // cover
@@ -84,6 +85,8 @@ extension RootInteractor {
             return .setPaths([.sizeClass])
         case .tapSystemToolbarButton:
             return .setPaths([.systemToolbar])
+        case .tapSystemToolbarTabViewButton:
+            return .setCover(.toolBarTabBar)
         case .tapCustomBarButton:
             return .setPaths([.customBar])
         case .tapSplitButton:
